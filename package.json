@@ -81,14 +81,22 @@
       "description": "When listing directory items, list subdirectories before listing files."
     },
     "autoReveal": {
-      "type": "boolean",
-      "default": false,
-      "description": "Reveal tree view entries when they become the active pane item."
+      "type": ["string", "boolean"],
+      "default": "select",
+      "description": "Control the tree view selection behavior when the WorkspaceCenter active item changes.",
+      "radio": true,
+      "enum": [
+        {"value": "select",          "description": "'select' (tree selection follows the active pane item)"},
+        {"value": "selectAndScroll", "description": "'selectAndScroll' (follows active item and additionally scrolls selection into view if needed)"},
+        {"value": "none",            "description": "'none' (tree selection does not follow active pane item)"},
+        {"value": true,              "description": ""},
+        {"value": false,             "description": ""}
+      ]
     },
     "focusOnReveal": {
       "type": "boolean",
       "default": true,
-      "description": "Focus the tree view when revealing entries."
+      "description": "Focus the tree view when revealing entries explicitly. Auto Reveal never focuses the tree view."
     },
     "alwaysOpenExisting": {
       "type": "boolean",

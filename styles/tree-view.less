@@ -133,3 +133,27 @@
     }
   }
 }
+
+// Config Settings UI:
+section.settings-panel {
+    #tree-view\2e autoReveal {
+        display: flex;
+        flex-direction: column;
+        label {
+            margin-bottom: 0.5em;
+            padding-left: 2.25em;
+        }
+
+        // hide the true/false options of the autoReveal setting. These are supportted to migrate legacy configs but should not
+        // be shown as valid choices. Note that their corresponding labels are still shown and are used to document the legacy support to
+        // the User. See config schema in package.json
+        #tree-view\2e autoReveal\5b true\5d, #tree-view\2e autoReveal\5b false\5d {
+            display: none;
+        }
+
+    }
+}
+#tree-view\2e autoReveal::after {
+    content: "Note: This setting was previously a boolean. true/false are still supported but config.cson will automatically be migrated to their corresponding new values. true=='selectAndScroll' and false=='select'";
+    padding-left: 2.25em;
+}

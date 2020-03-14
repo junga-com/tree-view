@@ -243,8 +243,16 @@ class TreeView
         @openSelectedEntryInPane index
 
     @disposables.add atom.workspace.getCenter().onDidChangeActivePaneItem =>
-      @selectActiveFile()
-      @revealActiveFile({show: false, focus: false}) if atom.config.get('tree-view.autoReveal')
+      # since 'tree-view.autoReveal' started out as a boolean this if block migrates old boolean values to the corresponding new
+      # enum string. See autoReveal refereences in package.json and tree-view.less for the other code that support this migration.
+      autoRevealConfigValue = atom.config.get('tree-view.autoReveal')
+      if typeof autoRevealConfigValue == 'boolean'
+          autoRevealConfigValueNew = if autoRevealConfigValue then 'selectAndScroll' else 'select'
+          console.log "updating tree-view.autoReveal config from "+ autoRevealConfigValue + " to " + autoRevealConfigValueNew
+          autoRevealConfigValue = autoRevealConfigValueNew
+          atom.config.set('tree-view.autoReveal', autoRevealConfigValue)
+      @selectActiveFile() if autoRevealConfigValue != 'none'
+      @revealActiveFile({show: false, focus: false}) if autoRevealConfigValue == 'selectAndScroll' 
     @disposables.add atom.project.onDidChangePaths =>
       @updateRoots()
     @disposables.add atom.config.onDidChange 'tree-view.hideVcsIgnoredFiles', =>
